@@ -4,7 +4,7 @@ import com.per.facade.dto.ProductDto;
 import com.per.facade.exception.NotFoundException;
 import com.per.repository.ProductRepository;
 import com.per.repository.entity.Product;
-import com.per.repository.mapper.ProductMapper;
+import com.per.repository.mapper.EntityMapper;
 import com.per.service.ProductService;
 import org.springframework.stereotype.Service;
 
@@ -16,11 +16,11 @@ public class ProductServiceImpl implements ProductService {
 
     private ProductRepository productRepository;
 
-    private ProductMapper productMapper;
+    private EntityMapper entityMapper;
 
-    public ProductServiceImpl(ProductRepository productRepository, ProductMapper productMapper) {
+    public ProductServiceImpl(ProductRepository productRepository, EntityMapper entityMapper) {
         this.productRepository = productRepository;
-        this.productMapper = productMapper;
+        this.entityMapper = entityMapper;
     }
 
     @Override
@@ -28,7 +28,7 @@ public class ProductServiceImpl implements ProductService {
         List<Product> products = productRepository.findAll();
 
         return products.stream()
-                .map(product -> productMapper.map(product, ProductDto.class))
+                .map(product -> entityMapper.map(product, ProductDto.class))
                 .collect(Collectors.toList());
     }
 
@@ -39,6 +39,11 @@ public class ProductServiceImpl implements ProductService {
             throw new NotFoundException("Can't find any product with id = " + id);
         }
 
-        return productMapper.map(product, ProductDto.class);
+        return entityMapper.map(product, ProductDto.class);
+    }
+
+    @Override
+    public void create(ProductDto productDto) {
+        productRepository.save(entityMapper.map(productDto, Product.class));
     }
 }

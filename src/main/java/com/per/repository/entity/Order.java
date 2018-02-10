@@ -7,6 +7,7 @@ import org.hibernate.validator.constraints.Length;
 import javax.persistence.*;
 import javax.validation.constraints.Min;
 import java.time.LocalDate;
+import java.util.List;
 
 @Entity
 @Table(name = "orders", schema = "public")
@@ -28,7 +29,9 @@ public class Order extends BaseEntity {
 
     private ScheduleType scheduleType;
 
-    private StatusType status;
+    private List<OrderedProduct> products;
+
+    private StatusType status = StatusType.PROCESSING;
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO) //TODO check SequenceStyleGenerator
@@ -85,6 +88,7 @@ public class Order extends BaseEntity {
     }
 
     @Column(nullable = false)
+    @Enumerated(value = EnumType.STRING)
     public ScheduleType getScheduleType() {
         return scheduleType;
     }
@@ -93,7 +97,17 @@ public class Order extends BaseEntity {
         this.scheduleType = scheduleType;
     }
 
+    @OneToMany(mappedBy = "order", cascade = CascadeType.MERGE)//TODO cascade and proper bidirectional relationship
+    public List<OrderedProduct> getProducts() {
+        return products;
+    }
+
+    public void setProducts(List<OrderedProduct> products) {
+        this.products = products;
+    }
+
     @Column(nullable = false)
+    @Enumerated(value = EnumType.STRING)
     public StatusType getStatus() {
         return status;
     }

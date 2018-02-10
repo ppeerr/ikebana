@@ -31,4 +31,9 @@ public class ProductFacadeImpl implements ProductFacade {
     public ProductDto get(int id) {
         return null;
     }
+
+    @Override
+    public void create(ProductDto productDto) {
+        productService.create(productDto);
+    }
 }

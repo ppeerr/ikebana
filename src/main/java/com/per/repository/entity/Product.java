@@ -36,6 +36,8 @@ public class Product extends BaseEntity {
         this.id = id;
     }
 
+    @Column(nullable = false)
+    @Enumerated(value = EnumType.STRING)
     public ProductType getType() {
         return type;
     }
@@ -44,7 +46,7 @@ public class Product extends BaseEntity {
         this.type = type;
     }
 
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false)
     public String getName() {
         return name;
     }
@@ -61,6 +63,7 @@ public class Product extends BaseEntity {
         this.description = description;
     }
 
+    @Column(nullable = false)
     public Integer getQuantity() {
         return quantity;
     }

@@ -9,4 +9,6 @@ public interface ProductFacade {
     List<ProductDto> getAll();
 
     ProductDto get(int id);
+
+    void create(ProductDto productDto);
 }

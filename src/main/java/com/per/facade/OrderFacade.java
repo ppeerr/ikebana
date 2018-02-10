@@ -1,6 +1,7 @@
 package com.per.facade;
 
 import com.per.facade.dto.OrderDto;
+import com.per.rest.request.CreateOrderRequest;
 
 import java.util.List;
 
@@ -10,5 +11,5 @@ public interface OrderFacade {
 
     OrderDto get(int id);
 
-    void create(OrderDto orderDto);
+    void create(CreateOrderRequest orderDto);
 }

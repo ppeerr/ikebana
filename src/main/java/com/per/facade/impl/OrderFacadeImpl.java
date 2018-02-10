@@ -3,6 +3,8 @@ package com.per.facade.impl;
 import com.per.facade.OrderFacade;
 import com.per.facade.dto.OrderDto;
 import com.per.facade.exception.NoContentException;
+import com.per.facade.mapper.OrderDtoMapper;
+import com.per.rest.request.CreateOrderRequest;
 import com.per.service.OrderService;
 import org.springframework.stereotype.Service;
 
@@ -13,8 +15,11 @@ public class OrderFacadeImpl implements OrderFacade {
 
     private OrderService orderService;
 
-    public OrderFacadeImpl(OrderService orderService) {
+    private OrderDtoMapper orderDtoMapper;
+
+    public OrderFacadeImpl(OrderService orderService, OrderDtoMapper orderDtoMapper) {
         this.orderService = orderService;
+        this.orderDtoMapper = orderDtoMapper;
     }
 
     @Override
@@ -32,7 +37,7 @@ public class OrderFacadeImpl implements OrderFacade {
     }
 
     @Override
-    public void create(OrderDto orderDto) {
-        orderService.create(orderDto);
+    public void create(CreateOrderRequest createOrderRequest) {
+        orderService.create(orderDtoMapper.map(createOrderRequest, OrderDto.class));
     }
 }

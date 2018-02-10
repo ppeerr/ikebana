@@ -2,7 +2,7 @@ package com.per.repository.enums;
 
 public enum ScheduleType {
 
-    STANDART(PeriodType.WEEK, 4),
+    STANDARD(PeriodType.WEEK, 4),
     LOVE(PeriodType.DAY, 7),
     INSANE(PeriodType.WEEK, 52);
 

@@ -10,4 +10,6 @@ public interface ProductService {
 
     ProductDto get(int id);
 
+    void create(ProductDto productDto);
+
 }

@@ -1,4 +1,4 @@
-package com.per.facade.dto;
+package com.per.rest.request;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
@@ -9,10 +9,10 @@ import lombok.Data;
 
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
-import java.util.List;
+import java.util.Map;
 
 @Data
-public class OrderDto {
+public class CreateOrderRequest {
 
     @NotNull
     private String customerName;
@@ -34,5 +34,6 @@ public class OrderDto {
     private ScheduleType scheduleType;
 
     @NotNull
-    private List<OrderedProductDto> products;
+    private Map<Integer, Integer> productAmounts;
+
 }

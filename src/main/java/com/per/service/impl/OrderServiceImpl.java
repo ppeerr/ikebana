@@ -4,7 +4,7 @@ import com.per.facade.dto.OrderDto;
 import com.per.facade.exception.NotFoundException;
 import com.per.repository.OrderRepository;
 import com.per.repository.entity.Order;
-import com.per.repository.mapper.OrderMapper;
+import com.per.repository.mapper.EntityMapper;
 import com.per.service.OrderService;
 import org.springframework.stereotype.Service;
 
@@ -16,11 +16,11 @@ public class OrderServiceImpl implements OrderService {
 
     private OrderRepository orderRepository;
 
-    private OrderMapper orderMapper;
+    private EntityMapper entityMapper;
 
-    public OrderServiceImpl(OrderRepository orderRepository, OrderMapper orderMapper) {
+    public OrderServiceImpl(OrderRepository orderRepository, EntityMapper entityMapper) {
         this.orderRepository = orderRepository;
-        this.orderMapper = orderMapper;
+        this.entityMapper = entityMapper;
     }
 
     @Override
@@ -28,7 +28,7 @@ public class OrderServiceImpl implements OrderService {
         List<Order> orders = orderRepository.findAll();
 
         return orders.stream()
-                .map(order -> orderMapper.map(order, OrderDto.class))
+                .map(order -> entityMapper.map(order, OrderDto.class))
                 .collect(Collectors.toList());
     }
 
@@ -39,11 +39,11 @@ public class OrderServiceImpl implements OrderService {
             throw new NotFoundException("Can't find any order with id = " + id);
         }
 
-        return orderMapper.map(order, OrderDto.class);
+        return entityMapper.map(order, OrderDto.class);
     }
 
     @Override
     public void create(OrderDto orderDto) {
-
+        orderRepository.save(entityMapper.map(orderDto, Order.class));
     }
 }
