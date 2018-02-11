@@ -7,7 +7,6 @@ import org.hibernate.validator.constraints.Length;
 import javax.persistence.*;
 import javax.validation.constraints.Min;
 import java.time.LocalDate;
-import java.util.List;
 
 @Entity
 @Table(name = "orders", schema = "public")
@@ -29,7 +28,7 @@ public class Order extends BaseEntity {
 
     private ScheduleType scheduleType;
 
-    private List<OrderedProduct> products;
+//    private List<OrderedProduct> products;
 
     private StatusType status = StatusType.PROCESSING;
 
@@ -97,14 +96,15 @@ public class Order extends BaseEntity {
         this.scheduleType = scheduleType;
     }
 
-    @OneToMany(mappedBy = "order", cascade = CascadeType.MERGE)//TODO cascade and proper bidirectional relationship
-    public List<OrderedProduct> getProducts() {
-        return products;
-    }
-
-    public void setProducts(List<OrderedProduct> products) {
-        this.products = products;
-    }
+    //TODO cascade and proper bidirectional relationship
+//    @OneToMany(mappedBy = "order")
+//    public List<OrderedProduct> getProducts() {
+//        return products;
+//    }
+//
+//    public void setProducts(List<OrderedProduct> products) {
+//        this.products = products;
+//    }
 
     @Column(nullable = false)
     @Enumerated(value = EnumType.STRING)

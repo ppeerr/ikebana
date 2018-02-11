@@ -25,4 +25,4 @@ spring:
     database-platform: org.hibernate.dialect.PostgreSQLDialect
     hibernate:
 #          TODO check ddl configuration
-          ddl-auto: update
+          ddl-auto: create

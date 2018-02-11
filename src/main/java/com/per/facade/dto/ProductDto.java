@@ -8,7 +8,6 @@ import javax.validation.constraints.NotNull;
 @Data
 public class ProductDto {
 
-    @NotNull
     private Integer id;
 
     @NotNull

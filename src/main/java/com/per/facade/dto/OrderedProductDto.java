@@ -2,16 +2,20 @@ package com.per.facade.dto;
 
 import lombok.Data;
 
+import javax.validation.constraints.NotNull;
+
 //FIXME
 @Data
 public class OrderedProductDto {
 
     private Integer id;
 
-    private OrderDto order;
+    private Integer orderId;
 
-    private ProductDto product;
+    @NotNull
+    private Integer productId;
 
+    @NotNull
     private Integer amount;
 
 }

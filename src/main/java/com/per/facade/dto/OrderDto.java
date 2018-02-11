@@ -14,6 +14,8 @@ import java.util.List;
 @Data
 public class OrderDto {
 
+    private Integer id;
+
     @NotNull
     private String customerName;
 

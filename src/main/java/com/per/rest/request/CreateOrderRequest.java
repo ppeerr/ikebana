@@ -8,6 +8,7 @@ import com.per.repository.enums.ScheduleType;
 import lombok.Data;
 
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.time.LocalDate;
 import java.util.Map;
 
@@ -33,7 +34,7 @@ public class CreateOrderRequest {
     @NotNull
     private ScheduleType scheduleType;
 
-    @NotNull
+    @Size(min = 1)
     private Map<Integer, Integer> productAmounts;
 
 }

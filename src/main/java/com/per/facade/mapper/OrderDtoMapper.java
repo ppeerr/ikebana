@@ -33,9 +33,8 @@ public class OrderDtoMapper extends ConfigurableMapper {
                         createOrderRequest.getProductAmounts().forEach((productId, amount) -> {
                             OrderedProductDto orderedProductDto = new OrderedProductDto();
                             orderedProductDto.setId(productId);
-                            orderedProductDto.setProduct(productService.get(productId));
+                            orderedProductDto.setProductId(productService.get(productId).getId());
                             orderedProductDto.setAmount(amount);
-                            orderedProductDto.setOrder(orderDto);
 
                             orderedProducts.add(orderedProductDto);
                         });

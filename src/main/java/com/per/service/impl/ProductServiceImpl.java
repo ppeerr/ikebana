@@ -8,10 +8,12 @@ import com.per.repository.mapper.EntityMapper;
 import com.per.service.ProductService;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
+@Transactional
 public class ProductServiceImpl implements ProductService {
 
     private ProductRepository productRepository;

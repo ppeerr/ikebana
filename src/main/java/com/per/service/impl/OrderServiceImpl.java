@@ -3,23 +3,30 @@ package com.per.service.impl;
 import com.per.facade.dto.OrderDto;
 import com.per.facade.exception.NotFoundException;
 import com.per.repository.OrderRepository;
+import com.per.repository.OrderedProductRepository;
 import com.per.repository.entity.Order;
+import com.per.repository.entity.OrderedProduct;
 import com.per.repository.mapper.EntityMapper;
 import com.per.service.OrderService;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
+@Transactional
 public class OrderServiceImpl implements OrderService {
 
     private OrderRepository orderRepository;
 
+    private OrderedProductRepository orderedProductRepository;
+
     private EntityMapper entityMapper;
 
-    public OrderServiceImpl(OrderRepository orderRepository, EntityMapper entityMapper) {
+    public OrderServiceImpl(OrderRepository orderRepository, OrderedProductRepository orderedProductRepository, EntityMapper entityMapper) {
         this.orderRepository = orderRepository;
+        this.orderedProductRepository = orderedProductRepository;
         this.entityMapper = entityMapper;
     }
 
@@ -44,6 +51,14 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public void create(OrderDto orderDto) {
-        orderRepository.save(entityMapper.map(orderDto, Order.class));
+        //TODO fixme by JPA functionality
+        Order order = entityMapper.map(orderDto, Order.class);
+        orderRepository.save(order);
+
+        orderDto.getProducts().forEach(orderedProductDto -> {
+            OrderedProduct orderedProduct = entityMapper.map(orderedProductDto, OrderedProduct.class);
+            orderedProduct.setOrderId(order.getId());
+            orderedProductRepository.save(orderedProduct);
+        });
     }
 }

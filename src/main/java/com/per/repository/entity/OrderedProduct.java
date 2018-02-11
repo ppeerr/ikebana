@@ -8,9 +8,9 @@ public class OrderedProduct extends BaseEntity {
 
     private Integer id;
 
-    private Order order;
+    private Integer orderId;
 
-    private Product product;
+    private Integer productId;
 
     private Integer amount;
 
@@ -25,24 +25,28 @@ public class OrderedProduct extends BaseEntity {
         this.id = id;
     }
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "order_id", nullable = false)
-    public Order getOrder() {
-        return order;
+//    @ManyToOne(fetch = FetchType.LAZY)
+//    @JoinColumn(name = "order_id", nullable = false)
+//    @ManyToOne
+//    @JoinColumn(name = "order_id")
+    @Column(nullable = false)
+    public Integer getOrderId() {
+        return orderId;
     }
 
-    public void setOrder(Order order) {
-        this.order = order;
+    public void setOrderId(Integer orderId) {
+        this.orderId = orderId;
     }
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "product_id", nullable = false)
-    public Product getProduct() {
-        return product;
+//    @ManyToOne
+//    @JoinColumn(name = "product_id", nullable = false)
+    @Column(nullable = false)
+    public Integer getProductId() {
+        return productId;
     }
 
-    public void setProduct(Product product) {
-        this.product = product;
+    public void setProductId(Integer productId) {
+        this.productId = productId;
     }
 
     @Column(nullable = false)
