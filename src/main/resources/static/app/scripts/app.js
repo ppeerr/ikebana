@@ -17,7 +17,7 @@ angular
                 controllerAs: 'main',
                 resolve: {
                     products: function ($http) {
-                        return $http.get("http://localhost:9090/api/products").then(function (response) {
+                        return $http.get("/api/products").then(function (response) {
                             return response.data;
                         })
                     }
@@ -30,7 +30,7 @@ angular
                 controllerAs: 'orders',
                 resolve: {
                     orders: function ($http) { //  data assign to order list
-                        return $http.get("http://localhost:9090/api/orders").then(function (response) {
+                        return $http.get("/api/orders").then(function (response) {
                             return response.data;
                         })
                     }
