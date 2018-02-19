@@ -100,7 +100,7 @@ export default {
 
   },
   methods: {
-    onOpenModal() {
+    onOpenModal(val) {
       this.currentBouquet = val;
       this.state = 'modal';
 
