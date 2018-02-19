@@ -12,17 +12,24 @@
     <table class="table table-hover">
         <thead>
         <tr>
-            <th>Product</th>
-            <th>Amount</th>
-            <th>Quantity</th>
+            <th>#</th>
+            <th>Customer name</th>
+            <th>Address</th>
+            <th>Total price</th>
+            <th>Schedule type</th>
+            <th>Total price</th>
+            <th>Comment</th>
         </tr>
         </thead>
         <tbody>
 
         <tr ng-repeat="details in ordersList">
-            <td>{{ details.product.name }}</td>
-            <td>Rs. &nbsp;{{ details.amount | number : 2 }}</td>
-            <td> {{ details.stock }}</td>
+            <td>{{ details.id }}</td>
+            <td> {{ details.customerName }}</td>
+            <td> {{ details.address }}</td>
+            <td> {{ details.scheduleType }}</td>
+            <td> {{ details.totalPrice }}</td>
+            <td> {{ details.comment }}</td>
         </tr>
         </tbody>
     </table>
