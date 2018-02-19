@@ -4,3 +4,4 @@ target/
 src/main/resources/static/bower_components
 *.iml
 *.jar
+/node_modules/

@@ -16,11 +16,33 @@ angular
                 controller: 'MainCtrl',
                 controllerAs: 'main',
                 resolve: {
-                    products: function ($http) {
-                        return $http.get("/api/products").then(function (response) {
-                            return response.data;
-                        })
-                    }
+
+                  products: function() {
+                    return [
+                    {"id":1,
+                    "type":"BOUQUET",
+                    "name":"Букет1",
+                    "description":"Букет алых роз",
+                    "quantity":25,
+                    "price":1000},
+                    {"id":2,
+                     "type":"BOUQUET",
+                     "name":"Букет2",
+                     "description":"Букет белых роз",
+                     "quantity":10,
+                     "price":2000},
+                    {"id":3,
+                     "type":"BASKET",
+                     "name":"Корзинка1",
+                     "description":"Корзинка с лютиками",
+                     "quantity":100,"price":1500}
+                    ];
+                      }
+//                    products: function ($http) {
+//                        return $http.get("http://128.199.36.211:9090/api/products").then(function (response) {
+//                            return response.data;
+//                        })
+//                    }
                 }
             })
 
@@ -30,7 +52,7 @@ angular
                 controllerAs: 'orders',
                 resolve: {
                     orders: function ($http) { //  data assign to order list
-                        return $http.get("/api/orders").then(function (response) {
+                        return $http.get("http://128.199.36.211:9090/api/orders").then(function (response) {
                             return response.data;
                         })
                     }
