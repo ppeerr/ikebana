@@ -1,12 +1,15 @@
 <template>
   <div id="app">
     <div class="wrapper">
-      <div @click="onScroll" class="to-scroll">
+      <div @click='onScroll("hr2")' class="to-scroll">
         <h2>Выбрать букеты</h2>
         <img src="./assets/white-down-arrow-png-2.png" alt="">
       </div>
     </div>
     <hr id="hr">
+    <hr id="hr1">
+    <div class="message"><h3>{{ message }}</h3></div>
+    <hr id="hr2">
     <app-items :bouquets="bouquets"
                @toModal="onOpenModal"></app-items>
   <transition name="modal">
@@ -23,10 +26,12 @@ export default {
   data () {
     return {
       state: '',
+      scrollTagId: '',
       currentBouquet: '',
       scrollSpeed: 30,
-//      scrolled: '1',
+      //      scrolled: '1',
       scrolledAfter: '',
+      message: 'Тян тянучка цветы тянучке подарите, ей приятно будет, может даст, но не факт, скорей всего нет. Цветы пахучие тянучке. На выбор, разные варианты подписки, завалите ее цветами. Курьер приедет и подарит ей букет, тянучка обнимет его, но не вас.',
        bouquets: [
         {
           id: '001',
@@ -108,18 +113,22 @@ export default {
     onCloseModal() {
       this.state = '';
     },
-    onScroll() {
-      var scrolled = 0;
+    onScroll(id) {
+      if ((typeof id) === 'string'){
+          this.scrollTagId = id;
+          }
 
-      if (this.hrY()>0) {
+     var scrolled = 0;
+
+      if (this.hrY(this.scrollTagId)>0) {
         scrolled = window.pageYOffset; //записали положение
-        console.log(scrolled);
-        console.log(this.scrolledAfter);
+//        console.log(scrolled);
+//        console.log(this.scrolledAfter);
         if (scrolled == this.scrolledAfter || this.scrolledAfter==''){
           window.scrollBy(0,this.scrollSpeed);
           this.scrolledAfter = window.pageYOffset; //записали положение после
             if (this.scrolledAfter > scrolled){
-            requestAnimationFrame(this.onScroll);
+            requestAnimationFrame(this.onScroll)
 
           } else {
             this.scrolledAfter = '';
@@ -132,15 +141,15 @@ export default {
       } else {
         this.scrolledAfter='';
       }
-
     },
-    hrY() {
-      let hr = document.getElementById("hr");
-//      console.log(hr.getBoundingClientRect().y);
-      return hr.getBoundingClientRect().y
+    hrY(par) {
+//      console.log(par);
+      let hr1 = document.getElementById(par);
+
+      return hr1.getBoundingClientRect().y
     }
 
-  }
+  },
 }
 </script>
 
@@ -159,32 +168,6 @@ export default {
   background-size: cover;
 }
 
-/*
-.ratio-inner {
-  position: relative;
-  height: 0;
-  border: none;
-}
-*/
-/*
-.ratio-content {
-  position: absolute;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  display: flex;
-  justify-content: space-around;
-  background-image: url('./assets/bgVer1.jpg');
-  background-size: cover;
-  overflow: hidden;
-}
-*/
-/*
-.ratio-16-9 {
-  padding-top: 56.25%;  100% ширины делим на 16 и умножаем на 9
-}
-*/
 .to-scroll {
   width: 250px;
   height: 150px;
@@ -231,12 +214,30 @@ export default {
 
 
 }
-hr {
+#hr {
   height: 12px;
   border: 0;
   -webkit-box-shadow: inset 0 15px 12px -11px rgba(0,0,0,0.5);
           box-shadow: inset 0 15px 12px -11px rgba(0,0,0,0.5);
   margin: 0px;
+}
+#hr1, #hr2 {
+  border: 0;
+  height: 1px;
+  background-image: -webkit-linear-gradient(0deg, rgba(0,0,0,0), rgba(0,0,0,0.75), rgba(0,0,0,0));
+  background-image:    -moz-linear-gradient(0deg, rbga(0,0,0,0), rgba(0,0,0,0.75), rgba(0,0,0,0));
+  background-image:     -ms-linear-gradient(0deg, rbga(0,0,0,0), rgba(0,0,0,0.75), rgba(0,0,0,0));
+  background-image:      -o-linear-gradient(0deg, rbga(0,0,0,0), rgba(0,0,0,0.75), rgba(0,0,0,0));
+}
+.message {
+  max-width: 800px;
+  margin: 20px auto;
+  text-align: center;
+  font-style: italic;
+
+}
+.message h3{
+  line-height: 160%;
 }
 
 .modal-enter-active {
