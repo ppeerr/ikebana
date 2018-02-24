@@ -2,6 +2,7 @@
 out/
 target/
 src/main/resources/static/bower_components
+src/main/resources/public/
 *.iml
 *.jar
 /node_modules/
