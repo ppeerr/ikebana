@@ -27,6 +27,9 @@ public class OrderFacadeImpl implements OrderFacade {
     @Override
     public List<OrderDto> getAll() {
         List<OrderDto> orders = orderService.getAll();
+
+        //TODO get products by ids
+
         if (orders.isEmpty()) {
             throw new NoContentException("Can't find any order");
         }
@@ -36,6 +39,11 @@ public class OrderFacadeImpl implements OrderFacade {
     @Override
     public OrderDto get(int id) {
         return null;
+    }
+
+    @Override
+    public void sendInfo(int id) {
+
     }
 
     @Override

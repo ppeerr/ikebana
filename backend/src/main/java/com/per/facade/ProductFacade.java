@@ -1,6 +1,7 @@
 package com.per.facade;
 
 import com.per.facade.dto.ProductDto;
+import com.per.rest.request.CreateProductRequest;
 
 import java.util.List;
 
@@ -10,5 +11,5 @@ public interface ProductFacade {
 
     ProductDto get(int id);
 
-    void create(ProductDto productDto);
+    void create(CreateProductRequest productDto);
 }

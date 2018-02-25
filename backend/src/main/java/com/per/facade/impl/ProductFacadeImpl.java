@@ -3,6 +3,8 @@ package com.per.facade.impl;
 import com.per.facade.ProductFacade;
 import com.per.facade.dto.ProductDto;
 import com.per.facade.exception.NoContentException;
+import com.per.facade.mapper.ProductDtoMapper;
+import com.per.rest.request.CreateProductRequest;
 import com.per.service.ProductService;
 import org.springframework.stereotype.Service;
 
@@ -15,8 +17,11 @@ public class ProductFacadeImpl implements ProductFacade {
 
     private ProductService productService;
 
-    public ProductFacadeImpl(ProductService productService) {
+    private ProductDtoMapper productDtoMapper;
+
+    public ProductFacadeImpl(ProductService productService, ProductDtoMapper productDtoMapper) {
         this.productService = productService;
+        this.productDtoMapper = productDtoMapper;
     }
 
     @Override
@@ -35,7 +40,7 @@ public class ProductFacadeImpl implements ProductFacade {
     }
 
     @Override
-    public void create(ProductDto productDto) {
-        productService.create(productDto);
+    public void create(CreateProductRequest productDto) {
+        productService.create(productDtoMapper.map(productDto, ProductDto.class));
     }
 }

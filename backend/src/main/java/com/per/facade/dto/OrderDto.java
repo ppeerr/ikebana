@@ -19,6 +19,9 @@ public class OrderDto {
     @NotNull
     private String customerName;
 
+    @NotNull
+    private String phoneNumber;
+
     private String comment;
 
     @NotNull

@@ -11,5 +11,7 @@ public interface OrderFacade {
 
     OrderDto get(int id);
 
+    void sendInfo(int id);
+
     void create(CreateOrderRequest orderDto);
 }

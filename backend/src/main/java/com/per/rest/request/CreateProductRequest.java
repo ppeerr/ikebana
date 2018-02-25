@@ -1,4 +1,4 @@
-package com.per.facade.dto;
+package com.per.rest.request;
 
 import com.per.repository.enums.FlowersType;
 import com.per.repository.enums.ProductType;
@@ -7,9 +7,7 @@ import lombok.Data;
 import javax.validation.constraints.NotNull;
 
 @Data
-public class ProductDto {
-
-    private Integer id;
+public class CreateProductRequest {
 
     @NotNull
     private ProductType type;

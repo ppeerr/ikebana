@@ -3,6 +3,7 @@ package com.per.rest;
 import com.per.facade.ProductFacade;
 import com.per.facade.dto.ProductDto;
 import com.per.rest.api.ProductApi;
+import com.per.rest.request.CreateProductRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -37,7 +38,7 @@ public class ProductController implements ProductApi {
     }
 
     @RequestMapping(method = RequestMethod.POST)
-    public ResponseEntity create(@Valid @RequestBody ProductDto productDto) {
+    public ResponseEntity create(@Valid @RequestBody CreateProductRequest productDto) {
         productFacade.create(productDto);
 
         return new ResponseEntity(HttpStatus.OK);

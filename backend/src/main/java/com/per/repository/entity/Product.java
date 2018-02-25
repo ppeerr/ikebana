@@ -1,5 +1,6 @@
 package com.per.repository.entity;
 
+import com.per.repository.enums.FlowersType;
 import com.per.repository.enums.ProductType;
 import org.hibernate.validator.constraints.Length;
 
@@ -13,6 +14,8 @@ public class Product extends BaseEntity {
     private Integer id;
 
     private ProductType type;
+
+    private FlowersType flowersType;
 
     @Length(min = 3)
     private String name;
@@ -44,6 +47,16 @@ public class Product extends BaseEntity {
 
     public void setType(ProductType type) {
         this.type = type;
+    }
+
+    @Column(nullable = false)
+    @Enumerated(value = EnumType.STRING)
+    public FlowersType getFlowersType() {
+        return flowersType;
+    }
+
+    public void setFlowersType(FlowersType flowersType) {
+        this.flowersType = flowersType;
     }
 
     @Column(nullable = false)

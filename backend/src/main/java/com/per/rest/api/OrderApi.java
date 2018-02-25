@@ -24,6 +24,13 @@ public interface OrderApi {
     })
     ResponseEntity<OrderDto> get(int id);
 
+    @ApiOperation(value = "Send order info to related phone number by id")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "Success", response = OrderDto.class),
+            @ApiResponse(code = 404, message = "Can't find the order")
+    })
+    ResponseEntity sendInfo(int id);
+
     @ApiOperation(value = "Create new order")
     @ApiResponses({
             @ApiResponse(code = 200, message = "Success"),

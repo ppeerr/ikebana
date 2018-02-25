@@ -7,6 +7,7 @@ import org.hibernate.validator.constraints.Length;
 import javax.persistence.*;
 import javax.validation.constraints.Min;
 import java.time.LocalDate;
+import java.util.Date;
 
 @Entity
 @Table(name = "orders", schema = "public")
@@ -16,6 +17,8 @@ public class Order extends BaseEntity {
 
     @Length(min = 3)
     private String customerName;
+
+    private String phoneNumber;
 
     private String comment;
 
@@ -27,6 +30,8 @@ public class Order extends BaseEntity {
     private LocalDate startDate;
 
     private ScheduleType scheduleType;
+
+    private Date lastStatusCheckDate;
 
 //    private List<OrderedProduct> products;
 
@@ -42,13 +47,22 @@ public class Order extends BaseEntity {
         this.id = id;
     }
 
-    @Column(name = "customer_name", nullable = false)
+    @Column(nullable = false)
     public String getCustomerName() {
         return customerName;
     }
 
     public void setCustomerName(String customerName) {
         this.customerName = customerName;
+    }
+
+    @Column(nullable = false)
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
     }
 
     public String getComment() {
@@ -68,7 +82,7 @@ public class Order extends BaseEntity {
         this.address = address;
     }
 
-    @Column(name = "total_price", nullable = false)
+    @Column(nullable = false)
     public Integer getTotalPrice() {
         return totalPrice;
     }
@@ -77,7 +91,7 @@ public class Order extends BaseEntity {
         this.totalPrice = totalPrice;
     }
 
-    @Column(name = "start_date", nullable = false)
+    @Column(nullable = false)
     public LocalDate getStartDate() {
         return startDate;
     }
@@ -105,6 +119,14 @@ public class Order extends BaseEntity {
 //    public void setProducts(List<OrderedProduct> products) {
 //        this.products = products;
 //    }
+
+    public Date getLastStatusCheckDate() {
+        return lastStatusCheckDate;
+    }
+
+    public void setLastStatusCheckDate(Date lastStatusCheckDate) {
+        this.lastStatusCheckDate = lastStatusCheckDate;
+    }
 
     @Column(nullable = false)
     @Enumerated(value = EnumType.STRING)

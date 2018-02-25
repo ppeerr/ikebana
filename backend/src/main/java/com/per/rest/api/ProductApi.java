@@ -1,6 +1,7 @@
 package com.per.rest.api;
 
 import com.per.facade.dto.ProductDto;
+import com.per.rest.request.CreateProductRequest;
 import io.swagger.annotations.*;
 import org.springframework.http.ResponseEntity;
 
@@ -27,6 +28,6 @@ public interface ProductApi {
     @ApiResponses({
             @ApiResponse(code = 200, message = "Success"),
     })
-    ResponseEntity create(@ApiParam("product dto") ProductDto productDto);
+    ResponseEntity create(@ApiParam("product dto") CreateProductRequest productDto);
 
 }

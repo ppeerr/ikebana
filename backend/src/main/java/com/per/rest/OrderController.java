@@ -35,6 +35,13 @@ public class OrderController implements OrderApi {
         return new ResponseEntity<>(product, HttpStatus.OK);
     }
 
+    @RequestMapping(value = "/{id}", method = RequestMethod.POST)
+    public ResponseEntity sendInfo(@PathVariable("id") int id) {
+        orderFacade.sendInfo(id);
+
+        return new ResponseEntity(HttpStatus.OK);
+    }
+
     @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity create(@Valid @RequestBody CreateOrderRequest orderRequest) {
         orderFacade.create(orderRequest);

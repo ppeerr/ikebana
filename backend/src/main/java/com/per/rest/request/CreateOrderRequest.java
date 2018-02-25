@@ -18,13 +18,13 @@ public class CreateOrderRequest {
     @NotNull
     private String customerName;
 
+    @NotNull //TODO validation
+    private String phoneNumber;
+
     private String comment;
 
     @NotNull
     private String address;
-
-    @NotNull
-    private Integer totalPrice;
 
     @NotNull
     @JsonDeserialize(using = LocalDateDeserializer.class)

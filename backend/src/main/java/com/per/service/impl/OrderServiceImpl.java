@@ -50,6 +50,11 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
+    public void sendInfo(int id) {
+
+    }
+
+    @Override
     public void create(OrderDto orderDto) {
         //TODO fixme by JPA functionality
         Order order = entityMapper.map(orderDto, Order.class);
