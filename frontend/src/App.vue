@@ -1,10 +1,12 @@
 <template>
   <div id="app" v-if="mainScreen == 'main'">
-    <modals-container/>
+<!--    <transition name="modal">-->
+
+<!--    </transition>-->
     <div class="menu">
       <div class="menu-wrapper">
         <ul class="items-menu">
-          <li class="item-menu" v-for="item in menuItems"><a href="#"> {{ item }}</a></li>
+          <li class="item-menu" v-for="(item, index) in menuItems" @click='onScroll(index)'><p> {{ item }}</p></li>
         </ul>
       </div>
     </div>
@@ -20,11 +22,12 @@
     <hr id="hr2">
     <app-items :bouquets="bouquets"
                @toModal="onOpenModal"></app-items>
-    <transition name="modal">
+<!--    <transition name="modal">-->
       <app-modal v-if="state == 'modal'"
                  @closeModal="onCloseModal"
                  :current="currentBouquet"></app-modal>
-    </transition>
+      <modals-container name="modal"/>
+<!--    </transition>-->
     <!--    <button class="btn" @click="show">Open modal</button>-->
 
     <!--    <AppModalNpm name="modal">123</AppModalNpm>-->
@@ -51,10 +54,10 @@
         scrolledAfter: '',
         message: 'Тян тянучка цветы тянучке подарите, ей приятно будет, может даст, но не факт, скорей всего нет. Цветы пахучие тянучке. На выбор, разные варианты подписки, завалите ее цветами. Курьер приедет и подарит ей букет, тянучка обнимет его, но не вас.',
         menuItems: {
-          menuItem1: 'Item 1',
-          menuItem2: 'Item 2',
+          menuItem1: 'Товары',
+          menuItem2: 'Как работаем?',
           menuItem3: 'О нас',
-          menuPhone: '88005553535'
+          menuPhone: '✆ 88005553535'
         },
         bouquets: [
           {
@@ -138,9 +141,13 @@
         // this.state = 'modal';
 
         this.$modal.show(MyComponent, {
-          text: 'This text is passed as a property'
+          text: val
         }, {
-          draggable: true
+          transition: "modal",
+          draggable: false,
+          maxWidth: 900,
+          adaptive: true
+
         })
 
       },
@@ -149,8 +156,17 @@
       },
       onScroll(id) {
         if ((typeof id) === 'string') {
+          if (id === "menuItem1") {
+            id = "hr2";
+          } else if (id === "menuItem2") {
+            id = "hr1";
+          }
           this.scrollTagId = id;
         }
+
+
+
+
 
         var scrolled = 0;
 
@@ -178,9 +194,7 @@
         }
       },
       hrY(par) {
-//      console.log(par);
         let hr1 = document.getElementById(par);
-
         return hr1.getBoundingClientRect().y
       }
 
@@ -188,7 +202,7 @@
   }
 </script>
 
-<style scoped>
+<style>
   #app {
 
   }
@@ -198,41 +212,66 @@
     top: 0;
     left: 0;
     width: 100%;
-    height: 50px;
+/*    height: auto;*/
+    padding: 0;
+    margin: 0;
     background-color: rgba(0, 0, 0, 0.5);
     z-index: 2;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.7);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
   }
 
   .menu-wrapper {
     max-width: 960px;
     margin: 0px auto;
     height: 100%;
+    padding: 0;
   }
 
   .items-menu {
     padding: 0;
+    margin: 0;
     height: 100%;
+    width: 100%;
     display: -webkit-box;
     display: -ms-flexbox;
     display: flex;
     -ms-flex-wrap: wrap;
     flex-wrap: wrap;
     justify-content: space-between;
+    flex-direction: row;
   }
 
-  .item-menu a {
-    background-color: blue;
+  .item-menu p {
+    cursor: pointer;
     height: 100%;
+    text-align: center;
+    line-height: 50px;
+    font-size: 20px;
     display: block;
-    width: 100px;
     color: #fff;
+    padding: 0;
+    margin: 0;
+    transition: background-color 0.25s;
+
   }
+.item-menu p:hover {
+  background-color: rgba(0, 0, 0, 0.35);
+  text-decoration: none;
+  transition: background-color 0.25s;
+}
 
   .item-menu {
     display: inline;
     margin: 0;
+    padding: 0;
     list-style-type: none;
+    min-width: 150px;
+    width: calc(100%/4 - 2%);
+  }
+  @media screen and (max-width: 720px) {
+    .item-menu {
+      width: calc(100% / 2 - 20px);
+    }
   }
 
   .wrapper {
@@ -329,8 +368,8 @@
   }
 
   .modal-leave-active {
-    -webkit-animation: fadeOut 0.2s ease;
-    animation: fadeOut 0.2s ease;
+    -webkit-animation: fadeOut 0.3s ease;
+    animation: fadeOut 0.3s ease;
 
   }
 
@@ -387,3 +426,4 @@
   }
 
 </style>
+

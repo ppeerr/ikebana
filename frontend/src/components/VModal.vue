@@ -1,6 +1,7 @@
 <template>
   <div>
     <h1>This is created inline</h1>
+
     <p>{{ text }}</p>
   </div>
 </template>
@@ -11,7 +12,13 @@
   }
 </script>
 
-<style>
 
+<style scoped>
+  h1{
+    color: blue
+  }
+  div{
+
+  }
 </style>
 
