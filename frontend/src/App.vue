@@ -145,7 +145,8 @@
         }, {
           transition: "modal",
           draggable: false,
-          maxWidth: 900,
+          width: 760,
+          height: 480,
           adaptive: true
 
         })
@@ -163,10 +164,6 @@
           }
           this.scrollTagId = id;
         }
-
-
-
-
 
         var scrolled = 0;
 
