@@ -123,6 +123,10 @@
   width: 50%;
   padding: 10px;
 }
+  .btn{
+    padding-left: 0;
+    padding-right: 0;
+  }
   .flirt {
     position: relative;
     height: 40px;

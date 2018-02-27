@@ -1,12 +1,9 @@
 <template>
   <div id="app" v-if="mainScreen == 'main'">
-<!--    <transition name="modal">-->
-
-<!--    </transition>-->
     <div class="menu">
       <div class="menu-wrapper">
         <ul class="items-menu">
-          <li class="item-menu" v-for="(item, index) in menuItems" @click='onScroll(index)'><p> {{ item }}</p></li>
+          <li class="item-menu" v-for="(item, index) in menuItems" @click='onScroll(index)'><p><span v-html="item"></span></p></li>
         </ul>
       </div>
     </div>
@@ -19,20 +16,14 @@
     <hr id="hr">
     <hr id="hr1">
     <div class="message"><h3>{{ message }}</h3></div>
+
     <hr id="hr2">
     <app-items :bouquets="bouquets"
                @toModal="onOpenModal"></app-items>
-<!--    <transition name="modal">-->
       <app-modal v-if="state == 'modal'"
                  @closeModal="onCloseModal"
                  :current="currentBouquet"></app-modal>
       <modals-container name="modal"/>
-<!--    </transition>-->
-    <!--    <button class="btn" @click="show">Open modal</button>-->
-
-    <!--    <AppModalNpm name="modal">123</AppModalNpm>-->
-
-    <!--    <modals-container/>-->
   </div>
 
 </template>
@@ -44,6 +35,8 @@
     name: 'app',
     data() {
       return {
+        w: 760,
+        h: 480,
         state: '',
         stateModal: '',
         mainScreen: 'main',
@@ -57,7 +50,7 @@
           menuItem1: 'Товары',
           menuItem2: 'Как работаем?',
           menuItem3: 'О нас',
-          menuPhone: '✆ 88005553535'
+          menuPhone: '<i class="fa fa-mobile" aria-hidden="true"></i> 88005553535'
         },
         bouquets: [
           {
@@ -130,23 +123,20 @@
 
     computed: {},
     methods: {
-//    show () {
-//
-//      this.$modal.show(AppModalNpm);
-////      this.stateModal = 'modal';
-//      console.log('kek');
-//    },
+
       onOpenModal(val) {
+        console.log(this.w);
+        console.log(this.h);
         // this.currentBouquet = val;
         // this.state = 'modal';
-
+//console.log(navigator.userAgent.match(/iPhone/i));
         this.$modal.show(MyComponent, {
           text: val
         }, {
           transition: "modal",
           draggable: false,
-          width: 760,
-          height: 480,
+          width: this.w,
+          height: this.h,
           adaptive: true
 
         })
@@ -196,6 +186,23 @@
       }
 
     },
+    beforeMount: function detectmob() {
+     if( navigator.userAgent.match(/Android/i)
+      || navigator.userAgent.match(/webOS/i)
+      || navigator.userAgent.match(/iPhone/i)
+      || navigator.userAgent.match(/iPad/i)
+      || navigator.userAgent.match(/iPod/i)
+      || navigator.userAgent.match(/BlackBerry/i)
+      || navigator.userAgent.match(/Windows Phone/i)
+     ){
+       this.w="100%";
+       this.h="100%";
+      }
+       else {
+       this.w="760px";
+       this.h="480px";
+      }
+    }
   }
 </script>
 
@@ -203,7 +210,10 @@
   #app {
 
   }
-
+  .fa{
+    font-size: 1.4em;
+    vertical-align: -3px;
+  }
   .menu {
     position: absolute;
     top: 0;
