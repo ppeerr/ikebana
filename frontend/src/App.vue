@@ -18,25 +18,37 @@
     <div class="message"><h3>{{ message }}</h3></div>
 
     <hr id="hr2">
+<!--
+      <div class="post" v-for="post in posts">
+        <span>{{ post.id }}</span>
+        <h3>{{ post.title }}</h3>
+        <p>{{ post.body }}</p>
+      </div>
+-->
     <app-items :bouquets="bouquets"
-               @toModal="onOpenModal"></app-items>
-      <app-modal v-if="state == 'modal'"
-                 @closeModal="onCloseModal"
-                 :current="currentBouquet"></app-modal>
-      <modals-container name="modal"/>
+               @toModal="onOpenModal"
+               ></app-items>
+    <app-modal v-if="state == 'modal'"
+               @closeModal="onCloseModal"
+               :current="currentBouquet"></app-modal>
+    <modals-container name="modal" @toKek="onKek"/>
+
   </div>
 
 </template>
 
 <script>
   import MyComponent from './components/VModal.vue'
+  import MyComponentOne from './components/VModal1.vue'
 
   export default {
     name: 'app',
     data() {
       return {
+        endpoint: 'http://128.199.36.211:9090/api/products',
+        posts: [],
         w: 760,
-        h: 480,
+        h: 520,
         state: '',
         stateModal: '',
         mainScreen: 'main',
@@ -123,6 +135,18 @@
 
     computed: {},
     methods: {
+      onKek() {
+        console.log('KEKEKE');
+      },
+//      savePost,
+      getAllPosts: function() {
+        this.$http.get(this.endpoint).then(function(response) {
+          this.posts = response.data;
+          console.log(this.posts);
+        }, function(error){
+          console.log(error);
+        })
+      },
 
       onOpenModal(val) {
         console.log(this.w);
@@ -130,20 +154,24 @@
         // this.currentBouquet = val;
         // this.state = 'modal';
 //console.log(navigator.userAgent.match(/iPhone/i));
-        this.$modal.show(MyComponent, {
-          text: val
+        this.$modal.show(MyComponentOne, {
+
+          text: val,
+          w: this.w,
         }, {
           transition: "modal",
           draggable: false,
           width: this.w,
           height: this.h,
-          adaptive: true
+          adaptive: true,
+
 
         })
 
       },
       onCloseModal() {
         this.state = '';
+
       },
       onScroll(id) {
         if ((typeof id) === 'string') {
@@ -186,6 +214,9 @@
       }
 
     },
+    created: function() {
+      this.getAllPosts()
+    },
     beforeMount: function detectmob() {
      if( navigator.userAgent.match(/Android/i)
       || navigator.userAgent.match(/webOS/i)
@@ -200,7 +231,7 @@
       }
        else {
        this.w="760px";
-       this.h="480px";
+       this.h="520px";
       }
     }
   }

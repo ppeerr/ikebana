@@ -5,3 +5,4 @@ backend/src/main/resources/public/
 *.iml
 *.jar
 /node_modules/
+/frontend/node_modules/

@@ -1,5 +1,8 @@
 import Vue from 'vue'
+import VueResource from 'vue-resource'
 import VModal from 'vue-js-modal'
+
+Vue.use(VueResource)
 
 import App from './App.vue'
 

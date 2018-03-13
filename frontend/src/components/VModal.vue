@@ -36,7 +36,7 @@
       <input type="text" placeholder="8005553535" id="inputPhone">
     </div>
       <footer>
-        <button type="button" class="btn btn-success">ЗАКАЗАТЬ!</button>
+        <button type="button" class="btn btn-success" @click="$emit('toKek')">ЗАКАЗАТЬ!</button>
       </footer>
     </div>
 
