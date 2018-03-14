@@ -9,7 +9,7 @@
       <h4>Выберите дни:</h4>
 <!--      <p>{{ text }}</p>-->
       <div class="btn-group" role="group">
-        <button class="btn" :class="{ 'btn-dark' : selectDay.monday, 'btn-outline-dark' : !selectDay.monday }" :title="'Понедельник'" @click="selectDay.monday=!selectDay.monday; if (selectDay.monday) invalid = false">Пн</button>
+        <button class="btn" :class="{ 'btn-dark' : selectDay.monday, 'btn-outline-dark' : !selectDay.monday }" :title="'Понедельник'" @click="selectDay.monday=!selectDay.monday; if (selectDay.monday) {invalidMessage.splice(invalidMessage.indexOf('Выберите хотя бы один день'), 1)}">Пн</button>
         <button class="btn" :class="{ 'btn-dark' : selectDay.tuesday, 'btn-outline-dark' : !selectDay.tuesday }" :title="'Вторник'" @click="selectDay.tuesday=!selectDay.tuesday; if (selectDay.tuesday) invalid = false">Вт</button>
         <button class="btn" :class="{ 'btn-dark' : selectDay.wednesday, 'btn-outline-dark' : !selectDay.wednesday }" :title="'Среда'" @click="selectDay.wednesday=!selectDay.wednesday; if (selectDay.wednesday) invalid = false">Ср</button>
         <button class="btn" :class="{ 'btn-dark' : selectDay.thursday, 'btn-outline-dark' : !selectDay.thursday }" :title="'Четверг'" @click="selectDay.thursday=!selectDay.thursday; if (selectDay.thursday) invalid = false">Чт</button>
@@ -26,7 +26,7 @@
       </div>
     <div class="date">
       <p>С какой даты начать?</p>
-      <input type="date" required min="2018-03-13" max="2020-03-13" :value="startDate" class="form-control" id="inputDate">
+      <input type="date" required :min="startDate" :max="maxDate" :value="startDate" class="form-control" id="inputDate">
       <span class="validity"></span>
     </div>
     <hr>
@@ -71,10 +71,22 @@
         address: '',
         phoneNumber: '',
         comment: '',
-        startDate: '2018-03-13',
+        startDate: '',
+        maxDate: '',
+        numStartDate: '',
+        numMaxDate: '',
+
+        formationDate: {
+          date: '',
+          currDate: '',
+          currMonth: '',
+          currYear: '',
+          maxYear: '',
+        },
+
 
         invalid: false,
-        invalidMessage: '',
+        invalidMessage: [],
         weeks: 1,
 
         select: {
@@ -112,21 +124,12 @@
       styleObj(){
         let urlString = "../src/assets" + this.text.img;
 //        urlString = urlString.slice(0, -33);
-        console.log(urlString);
+        console.log(this.maxDate);
         return {
           backgroundImage: "url('"+urlString+"')"
 //          background: "red"
         }
       },
-      getDate(){
-        let date = new Date();
-        let currDate = date.getDate();
-        let currMonth = date.getMonth();
-        let currYear = date.getYear();
-        return {
-//          this.startDate = 'currYear + "-" + currMonth + "-" + currDate'
-        }
-      }
     },
 
     methods: {
@@ -174,6 +177,7 @@
         } else this.select.insane.message = 'Выбрать!';
       },
       validateAndSend() {
+        this.invalidMessage = []; //cleaning arr
         let count = 0;
         for (let day in this.selectDay){
           if (this.selectDay[day]) {
@@ -181,17 +185,15 @@
           }
         }
         if (count == 0) {
-          this.invalidMessage = 'Выберите хотя бы один день';
+          this.invalidMessage.push('Выберите хотя бы один день');
           this.invalid = true;
         } else {
           this.invalid = false;
         }
         if (!this.customerName) {
-          if (this.invalid) this.invalidMessage = this.invalidMessage + ', введите имя';
-          if (!this.invalid) {
-            this.invalid = true;
-            this.invalidMessage = 'Введите имя';
-          }
+          this.invalidMessage.push('введите имя');
+          this.invalid = true;
+
         }
 
       }
@@ -205,7 +207,28 @@
 //        elem.style.height = 100 + "%";
   //      console.log(elem);
       }
+
     },
+    mounted: function(){
+      this.formationDate.date = new Date();
+      this.formationDate.currDate = this.formationDate.date.getDate();
+      this.formationDate.currMonth = this.formationDate.date.getMonth();
+      this.formationDate.currYear = this.formationDate.date.getFullYear();
+      this.formationDate.maxYear = this.formationDate.currYear+2;
+      this.formationDate.currMonth++;
+      if (this.formationDate.currMonth<10){
+        this.formationDate.currMonth = '0' + this.formationDate.currMonth;
+      }
+      if (this.formationDate.currDate<10){
+        this.formationDate.currDate = '0' + this.formationDate.currDate;
+      }
+      this.startDate = this.formationDate.currYear + "-" + this.formationDate.currMonth + "-" + this.formationDate.currDate;
+      this.maxDate = this.formationDate.maxYear + "-" + this.formationDate.currMonth + "-" + this.formationDate.currDate;
+      this.numStartDate = Number(this.formationDate.currYear + '' + this.formationDate.currMonth + '' + this.formationDate.currDate);
+
+      this.numMaxDate = Number(this.formationDate.maxYear + '' + this.formationDate.currMonth + '' + this.formationDate.currDate);
+      console.log(this.numMaxDate);
+    }
 
   }
 </script>
@@ -413,7 +436,7 @@
    .comment{
     position: relative;
     margin-top: 10px;
-    height: 100px;
+    height: 80px;
   }
   .comment p{
     position: absolute;
