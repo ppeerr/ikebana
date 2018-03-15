@@ -22,18 +22,19 @@ public interface OrderApi {
             @ApiResponse(code = 200, message = "Success", response = OrderDto.class),
             @ApiResponse(code = 404, message = "Can't find the order")
     })
-    ResponseEntity<OrderDto> get(int id);
+    ResponseEntity<OrderDto> get(@ApiParam("order id") int id);
 
     @ApiOperation(value = "Send order info to related phone number by id")
     @ApiResponses({
             @ApiResponse(code = 200, message = "Success", response = OrderDto.class),
             @ApiResponse(code = 404, message = "Can't find the order")
     })
-    ResponseEntity sendInfo(int id);
+    ResponseEntity sendInfo(@ApiParam("order id") int id);
 
     @ApiOperation(value = "Create new order")
     @ApiResponses({
             @ApiResponse(code = 200, message = "Success"),
+            @ApiResponse(code = 400, message = "Bad request"),
     })
     ResponseEntity create(@ApiParam("order dto") CreateOrderRequest orderRequest);
 }

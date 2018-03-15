@@ -4,7 +4,7 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
-import com.per.repository.enums.ScheduleType;
+import com.per.facade.dto.SelectedDays;
 import lombok.Data;
 
 import javax.validation.constraints.NotNull;
@@ -27,12 +27,15 @@ public class CreateOrderRequest {
     private String address;
 
     @NotNull
+    private Integer weeksCount;
+
+    @NotNull
+    private SelectedDays selectedDays;
+
+    @NotNull
     @JsonDeserialize(using = LocalDateDeserializer.class)
     @JsonSerialize(using = LocalDateSerializer.class)
     private LocalDate startDate;
-
-    @NotNull
-    private ScheduleType scheduleType;
 
     @Size(min = 1)
     private Map<Integer, Integer> productAmounts;

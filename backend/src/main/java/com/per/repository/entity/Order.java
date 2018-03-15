@@ -1,6 +1,5 @@
 package com.per.repository.entity;
 
-import com.per.repository.enums.ScheduleType;
 import com.per.repository.enums.StatusType;
 import org.hibernate.validator.constraints.Length;
 
@@ -24,12 +23,14 @@ public class Order extends BaseEntity {
 
     private String address;
 
+    private Integer weeksCount;
+
+    private String selectedDaysMask;
+
     @Min(value = 0)
     private Integer totalPrice;
 
     private LocalDate startDate;
-
-    private ScheduleType scheduleType;
 
     private Date lastStatusCheckDate;
 
@@ -38,7 +39,8 @@ public class Order extends BaseEntity {
     private StatusType status = StatusType.PROCESSING;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO) //TODO check SequenceStyleGenerator
+    @SequenceGenerator(name="orders_sequence", sequenceName="orders_sequence")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "orders_sequence") //TODO check SequenceStyleGenerator
     public Integer getId() {
         return id;
     }
@@ -83,6 +85,24 @@ public class Order extends BaseEntity {
     }
 
     @Column(nullable = false)
+    public Integer getWeeksCount() {
+        return weeksCount;
+    }
+
+    public void setWeeksCount(Integer weeksCount) {
+        this.weeksCount = weeksCount;
+    }
+
+    @Column(nullable = false)
+    public String getSelectedDaysMask() {
+        return selectedDaysMask;
+    }
+
+    public void setSelectedDaysMask(String selectedDaysMask) {
+        this.selectedDaysMask = selectedDaysMask;
+    }
+
+    @Column(nullable = false)
     public Integer getTotalPrice() {
         return totalPrice;
     }
@@ -98,16 +118,6 @@ public class Order extends BaseEntity {
 
     public void setStartDate(LocalDate startDate) {
         this.startDate = startDate;
-    }
-
-    @Column(nullable = false)
-    @Enumerated(value = EnumType.STRING)
-    public ScheduleType getScheduleType() {
-        return scheduleType;
-    }
-
-    public void setScheduleType(ScheduleType scheduleType) {
-        this.scheduleType = scheduleType;
     }
 
     //TODO cascade and proper bidirectional relationship

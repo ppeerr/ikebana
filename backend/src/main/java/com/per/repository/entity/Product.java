@@ -30,7 +30,8 @@ public class Product extends BaseEntity {
 
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @SequenceGenerator(name="products_sequence", sequenceName="products_sequence")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "products_sequence")
     public Integer getId() {
         return id;
     }

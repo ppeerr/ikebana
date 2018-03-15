@@ -27,6 +27,7 @@ public interface ProductApi {
     @ApiOperation(value = "Create new product")
     @ApiResponses({
             @ApiResponse(code = 200, message = "Success"),
+            @ApiResponse(code = 400, message = "Bad request"),
     })
     ResponseEntity create(@ApiParam("product dto") CreateProductRequest productDto);
 

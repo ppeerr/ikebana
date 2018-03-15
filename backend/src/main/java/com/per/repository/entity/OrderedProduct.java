@@ -16,7 +16,8 @@ public class OrderedProduct extends BaseEntity {
 
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @SequenceGenerator(name="ordered_product_sequence", sequenceName="ordered_product_sequence")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "ordered_product_sequence")
     public Integer getId() {
         return id;
     }

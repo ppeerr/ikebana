@@ -13,6 +13,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping(value = "/api/products", produces = "application/json")
+@CrossOrigin(origins = "*") //TODO remove
 public class ProductController implements ProductApi {
 
     private ProductFacade productFacade;
@@ -22,7 +23,7 @@ public class ProductController implements ProductApi {
     }
 
 //    @CrossOrigin(origins = "http://176.213.211.47:9090")
-    @CrossOrigin(origins = "*")
+//    @CrossOrigin(origins = "*")
     @RequestMapping(method = RequestMethod.GET)
     public ResponseEntity<List<ProductDto>> getAll() {
         List<ProductDto> products = productFacade.getAll();

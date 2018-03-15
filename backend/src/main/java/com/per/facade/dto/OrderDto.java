@@ -4,7 +4,6 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
-import com.per.repository.enums.ScheduleType;
 import lombok.Data;
 
 import javax.validation.constraints.NotNull;
@@ -28,15 +27,18 @@ public class OrderDto {
     private String address;
 
     @NotNull
+    private Integer weeksCount;
+
+    @NotNull
+    private SelectedDays selectedDays;
+
+    @NotNull
     private Integer totalPrice;
 
     @NotNull
     @JsonDeserialize(using = LocalDateDeserializer.class)
     @JsonSerialize(using = LocalDateSerializer.class)
     private LocalDate startDate;
-
-    @NotNull
-    private ScheduleType scheduleType;
 
     @NotNull
     private List<OrderedProductDto> products;

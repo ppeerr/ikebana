@@ -13,6 +13,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping(value = "/api/orders", produces = "application/json")
+@CrossOrigin(origins = "*") //TODO remove
 public class OrderController implements OrderApi {
 
     private OrderFacade orderFacade;
