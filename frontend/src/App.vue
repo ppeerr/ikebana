@@ -1,10 +1,9 @@
 <template>
   <div id="app" v-if="mainScreen == 'main'">
-    <modals-container/>
     <div class="menu">
       <div class="menu-wrapper">
         <ul class="items-menu">
-          <li class="item-menu" v-for="item in menuItems"><a href="#"> {{ item }}</a></li>
+          <li class="item-menu" v-for="(item, index) in menuItems" @click='onScroll(index)'><p><span v-html="item"></span></p></li>
         </ul>
       </div>
     </div>
@@ -17,30 +16,39 @@
     <hr id="hr">
     <hr id="hr1">
     <div class="message"><h3>{{ message }}</h3></div>
+
     <hr id="hr2">
+<!--
+      <div class="post" v-for="post in posts">
+        <span>{{ post.id }}</span>
+        <h3>{{ post.title }}</h3>
+        <p>{{ post.body }}</p>
+      </div>
+-->
     <app-items :bouquets="bouquets"
-               @toModal="onOpenModal"></app-items>
-    <transition name="modal">
-      <app-modal v-if="state == 'modal'"
-                 @closeModal="onCloseModal"
-                 :current="currentBouquet"></app-modal>
-    </transition>
-    <!--    <button class="btn" @click="show">Open modal</button>-->
+               @toModal="onOpenModal"
+               ></app-items>
+    <app-modal v-if="state == 'modal'"
+               @closeModal="onCloseModal"
+               :current="currentBouquet"></app-modal>
+    <modals-container name="modal" @toKek="onKek"/>
 
-    <!--    <AppModalNpm name="modal">123</AppModalNpm>-->
-
-    <!--    <modals-container/>-->
   </div>
 
 </template>
 
 <script>
   import MyComponent from './components/VModal.vue'
+  import MyComponentOne from './components/VModal1.vue'
 
   export default {
     name: 'app',
     data() {
       return {
+        endpoint: 'http://128.199.36.211:9090/api/products',
+        posts: [],
+        w: 760,
+        h: 520,
         state: '',
         stateModal: '',
         mainScreen: 'main',
@@ -51,10 +59,10 @@
         scrolledAfter: '',
         message: 'Тян тянучка цветы тянучке подарите, ей приятно будет, может даст, но не факт, скорей всего нет. Цветы пахучие тянучке. На выбор, разные варианты подписки, завалите ее цветами. Курьер приедет и подарит ей букет, тянучка обнимет его, но не вас.',
         menuItems: {
-          menuItem1: 'Item 1',
-          menuItem2: 'Item 2',
+          menuItem1: 'Товары',
+          menuItem2: 'Как работаем?',
           menuItem3: 'О нас',
-          menuPhone: '88005553535'
+          menuPhone: '<i class="fa fa-mobile" aria-hidden="true"></i> 88005553535'
         },
         bouquets: [
           {
@@ -127,28 +135,51 @@
 
     computed: {},
     methods: {
-//    show () {
-//
-//      this.$modal.show(AppModalNpm);
-////      this.stateModal = 'modal';
-//      console.log('kek');
-//    },
+      onKek() {
+        console.log('KEKEKE');
+      },
+//      savePost,
+      getAllPosts: function() {
+        this.$http.get(this.endpoint).then(function(response) {
+          this.posts = response.data;
+          console.log(this.posts);
+        }, function(error){
+          console.log(error);
+        })
+      },
+
       onOpenModal(val) {
+        console.log(this.w);
+        console.log(this.h);
         // this.currentBouquet = val;
         // this.state = 'modal';
+//console.log(navigator.userAgent.match(/iPhone/i));
+        this.$modal.show(MyComponentOne, {
 
-        this.$modal.show(MyComponent, {
-          text: 'This text is passed as a property'
+          text: val,
+          w: this.w,
         }, {
-          draggable: true
+          transition: "modal",
+          draggable: false,
+          width: this.w,
+          height: this.h,
+          adaptive: true,
+
+
         })
 
       },
       onCloseModal() {
         this.state = '';
+
       },
       onScroll(id) {
         if ((typeof id) === 'string') {
+          if (id === "menuItem1") {
+            id = "hr2";
+          } else if (id === "menuItem2") {
+            id = "hr1";
+          }
           this.scrollTagId = id;
         }
 
@@ -178,61 +209,107 @@
         }
       },
       hrY(par) {
-//      console.log(par);
         let hr1 = document.getElementById(par);
-
         return hr1.getBoundingClientRect().y
       }
 
     },
+    created: function() {
+      this.getAllPosts()
+    },
+    beforeMount: function detectmob() {
+     if( navigator.userAgent.match(/Android/i)
+      || navigator.userAgent.match(/webOS/i)
+      || navigator.userAgent.match(/iPhone/i)
+      || navigator.userAgent.match(/iPad/i)
+      || navigator.userAgent.match(/iPod/i)
+      || navigator.userAgent.match(/BlackBerry/i)
+      || navigator.userAgent.match(/Windows Phone/i)
+     ){
+       this.w="100%";
+       this.h="100%";
+      }
+       else {
+       this.w="760px";
+       this.h="520px";
+      }
+    }
   }
 </script>
 
-<style scoped>
+<style>
   #app {
 
   }
-
+  .fa{
+    font-size: 1.4em;
+    vertical-align: -3px;
+  }
   .menu {
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
-    height: 50px;
+/*    height: auto;*/
+    padding: 0;
+    margin: 0;
     background-color: rgba(0, 0, 0, 0.5);
     z-index: 2;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.7);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
   }
 
   .menu-wrapper {
     max-width: 960px;
     margin: 0px auto;
     height: 100%;
+    padding: 0;
   }
 
   .items-menu {
     padding: 0;
+    margin: 0;
     height: 100%;
+    width: 100%;
     display: -webkit-box;
     display: -ms-flexbox;
     display: flex;
     -ms-flex-wrap: wrap;
     flex-wrap: wrap;
     justify-content: space-between;
+    flex-direction: row;
   }
 
-  .item-menu a {
-    background-color: blue;
+  .item-menu p {
+    cursor: pointer;
     height: 100%;
+    text-align: center;
+    line-height: 50px;
+    font-size: 20px;
     display: block;
-    width: 100px;
     color: #fff;
+    padding: 0;
+    margin: 0;
+    transition: background-color 0.25s;
+
   }
+.item-menu p:hover {
+  background-color: rgba(0, 0, 0, 0.35);
+  text-decoration: none;
+  transition: background-color 0.25s;
+}
 
   .item-menu {
     display: inline;
     margin: 0;
+    padding: 0;
     list-style-type: none;
+    min-width: 150px;
+    width: calc(100%/4 - 2%);
+  }
+  @media screen and (max-width: 720px) {
+    .item-menu {
+      width: calc(100% / 2 - 20px);
+    }
   }
 
   .wrapper {
@@ -329,8 +406,8 @@
   }
 
   .modal-leave-active {
-    -webkit-animation: fadeOut 0.2s ease;
-    animation: fadeOut 0.2s ease;
+    -webkit-animation: fadeOut 0.3s ease;
+    animation: fadeOut 0.3s ease;
 
   }
 
@@ -387,3 +464,4 @@
   }
 
 </style>
+
