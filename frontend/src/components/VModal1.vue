@@ -9,13 +9,7 @@
       <h4>Выберите дни:</h4>
 <!--      <p>{{ text }}</p>-->
       <div class="btn-group" role="group">
-        <button class="btn" :class="{ 'btn-dark' : selectDay.monday, 'btn-outline-dark' : !selectDay.monday }" :title="'Понедельник'" @click="selectDay.monday=!selectDay.monday; if (selectDay.monday) {invalidMessage.splice(invalidMessage.indexOf('Выберите хотя бы один день'), 1)}">Пн</button>
-        <button class="btn" :class="{ 'btn-dark' : selectDay.tuesday, 'btn-outline-dark' : !selectDay.tuesday }" :title="'Вторник'" @click="selectDay.tuesday=!selectDay.tuesday; if (selectDay.tuesday) invalid = false">Вт</button>
-        <button class="btn" :class="{ 'btn-dark' : selectDay.wednesday, 'btn-outline-dark' : !selectDay.wednesday }" :title="'Среда'" @click="selectDay.wednesday=!selectDay.wednesday; if (selectDay.wednesday) invalid = false">Ср</button>
-        <button class="btn" :class="{ 'btn-dark' : selectDay.thursday, 'btn-outline-dark' : !selectDay.thursday }" :title="'Четверг'" @click="selectDay.thursday=!selectDay.thursday; if (selectDay.thursday) invalid = false">Чт</button>
-        <button class="btn" :class="{ 'btn-dark' : selectDay.friday, 'btn-outline-dark' : !selectDay.friday }" :title="'Пятница'" @click="selectDay.friday=!selectDay.friday; if (selectDay.friday) invalid = false">Пт</button>
-        <button class="btn" :class="{ 'btn-dark' : selectDay.saturday, 'btn-outline-dark' : !selectDay.saturday }" :title="'Суббота'" @click="selectDay.saturday=!selectDay.saturday; if (selectDay.saturday) invalid = false">Сб</button>
-        <button class="btn" :class="{ 'btn-dark' : selectDay.sunday, 'btn-outline-dark' : !selectDay.sunday }" :title="'Воскресенье'" @click="selectDay.sunday=!selectDay.sunday; if (selectDay.sunday) invalid = false">Вс</button>
+        <button v-for="day in selectDay" class="btn" :class="{ 'btn-dark' : day.value, 'btn-outline-dark' : !day.value }" :title="day.title" @click="onDay(day)">{{day.shotTitle}}</button>
       </div>
       <div class="price">
         <div> <span :title="'Количество недель в которые будет действителен заказ'">Кол-во недель:</span>
@@ -26,7 +20,7 @@
       </div>
     <div class="date">
       <p>С какой даты начать?</p>
-      <input type="date" required :min="startDate" :max="maxDate" :value="startDate" class="form-control" id="inputDate">
+      <input type="date" required :min="minDate" :max="maxDate" :value="startDate" @input="parseStartDate($event.target.value)" class="form-control" id="inputDate">
       <span class="validity"></span>
     </div>
     <hr>
@@ -50,7 +44,7 @@
       <p class="invalid" v-if="invalid">{{ invalidMessage }}</p>
 <!--    </transition>-->
       <footer>
-        <button type="button" class="btn btn-success" @click="validateAndSend">ЗАКАЗАТЬ!</button>
+        <button type="button" class="btn btn-success" @click="validate">ЗАКАЗАТЬ!</button>
       </footer>
     </div>
 
@@ -71,10 +65,11 @@
         address: '',
         phoneNumber: '',
         comment: '',
-        startDate: '',
+        minDate: '',
         maxDate: '',
-        numStartDate: '',
+        numMinDate: '',
         numMaxDate: '',
+        startDate: '',
 
         formationDate: {
           date: '',
@@ -108,13 +103,13 @@
           }
         },
         selectDay: {
-          monday: false,
-          tuesday: false,
-          wednesday: false,
-          thursday: false,
-          friday: false,
-          saturday: false,
-          sunday: false
+          monday: {value: false, title: 'Понедельник', shotTitle: 'Пн'},
+          tuesday: {value: false, title: 'Вторник', shotTitle: 'Вт'},
+          wednesday: {value: false, title: 'Среда', shotTitle: 'Ср'},
+          thursday: {value: false, title: 'Четверг', shotTitle: 'Чт'},
+          friday: {value: false, title: 'Пятница', shotTitle: 'Пт'},
+          saturday: {value: false, title: 'Суббота', shotTitle: 'Сб'},
+          sunday: {value: false, title: 'Воскресенье', shotTitle: 'Вс'}
         }
       }
     },
@@ -133,6 +128,24 @@
     },
 
     methods: {
+      parseStartDate(val){
+        console.log(val);
+        var str = [];
+        for (let i=0; i<=val.length; i++){
+          if (val[i] != "-"){
+            str = str + str[i];
+            console.log(str);
+            console.log(val.length);
+          }
+        }
+
+      },
+      onDay(val){
+        val.value = !val.value;
+        if (val.value) {
+          this.invalidMessage.splice(this.invalidMessage.indexOf('Выберите хотя бы один день'), 1)
+        }
+      },
       trim(val){
         this.weeks = val;
         if (typeof this.weeks == "string" && this.weeks != ""){
@@ -145,9 +158,11 @@
       },
       price() {
         let cost = 0;
-        for (let day in this.selectDay){
-          if (this.selectDay[day]) {
-            cost = (cost + this.weeks*this.text.cost);
+         for (let day in this.selectDay){
+          for (let val in this.selectDay[day]){
+            if (val == "value") {
+              if (this.selectDay[day][val]) cost=cost+this.text.cost*this.weeks;
+            }
           }
         }
         return cost;
@@ -176,14 +191,17 @@
           this.select.insane.message = 'Убрать';
         } else this.select.insane.message = 'Выбрать!';
       },
-      validateAndSend() {
+      validate() {
         this.invalidMessage = []; //cleaning arr
         let count = 0;
         for (let day in this.selectDay){
-          if (this.selectDay[day]) {
-            count++;
+          for (let val in this.selectDay[day]){
+            if (val == "value") {
+              if (this.selectDay[day][val]) count++;
+            }
           }
         }
+        console.log(count);
         if (count == 0) {
           this.invalidMessage.push('Выберите хотя бы один день');
           this.invalid = true;
@@ -193,13 +211,12 @@
         if (!this.customerName) {
           this.invalidMessage.push('введите имя');
           this.invalid = true;
-
         }
+//        if
 
       }
     },
     mounted: function() {
-      console.log(this.w);
       if (this.w == '100%') {
         this.image = 'hide';
         var elem = document.getElementById("selection");
@@ -207,9 +224,6 @@
 //        elem.style.height = 100 + "%";
   //      console.log(elem);
       }
-
-    },
-    mounted: function(){
       this.formationDate.date = new Date();
       this.formationDate.currDate = this.formationDate.date.getDate();
       this.formationDate.currMonth = this.formationDate.date.getMonth();
@@ -222,13 +236,17 @@
       if (this.formationDate.currDate<10){
         this.formationDate.currDate = '0' + this.formationDate.currDate;
       }
-      this.startDate = this.formationDate.currYear + "-" + this.formationDate.currMonth + "-" + this.formationDate.currDate;
+      this.minDate = this.formationDate.currYear + "-" + this.formationDate.currMonth + "-" + this.formationDate.currDate;
       this.maxDate = this.formationDate.maxYear + "-" + this.formationDate.currMonth + "-" + this.formationDate.currDate;
-      this.numStartDate = Number(this.formationDate.currYear + '' + this.formationDate.currMonth + '' + this.formationDate.currDate);
+      this.startDate = this.minDate;
+      this.numMinDate = Number(this.formationDate.currYear + '' + this.formationDate.currMonth + '' + this.formationDate.currDate);
 
       this.numMaxDate = Number(this.formationDate.maxYear + '' + this.formationDate.currMonth + '' + this.formationDate.currDate);
       console.log(this.numMaxDate);
-    }
+    },
+
+
+
 
   }
 </script>
