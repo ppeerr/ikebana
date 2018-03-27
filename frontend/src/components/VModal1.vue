@@ -20,7 +20,7 @@
       </div>
     <div class="date">
       <p>С какой даты начать?</p>
-      <input type="date" required :min="minDate" :max="maxDate" :value="startDate" @input="parseStartDate($event.target.value)" class="form-control" id="inputDate">
+      <input type="date" required :min="minDate" :max="maxDate" :value="startDate" @input="startDate = $event.target.value" class="form-control" id="inputDate">
       <span class="validity"></span>
     </div>
     <hr>
@@ -40,9 +40,12 @@
       <p>Комментарий:</p>
       <textarea rows="3" id="inputComment" class="form-control" v-model="comment" placeholder="Напишите предпочитаемое время доставки, нюансы заказа..."></textarea>
     </div>
-<!--    <transition name="fade" mode="out-in">-->
-      <p class="invalid" v-if="invalid">{{ invalidMessage }}</p>
-<!--    </transition>-->
+    <transition name="fade" mode="out-in">
+      <div class="invalid">
+        <span v-if="invalid" v-for="mes in invalidMessage">{{ mes }}! </span>
+      </div>
+    </transition>
+
       <footer>
         <button type="button" class="btn btn-success" @click="validate">ЗАКАЗАТЬ!</button>
       </footer>
@@ -50,8 +53,6 @@
 
   </div>
 </template>
-
-<!--$emit('close')-->
 
 <script>
   export default {
@@ -70,6 +71,7 @@
         numMinDate: '',
         numMaxDate: '',
         startDate: '',
+        numStartDate: [],
 
         formationDate: {
           date: '',
@@ -119,7 +121,7 @@
       styleObj(){
         let urlString = "../src/assets" + this.text.img;
 //        urlString = urlString.slice(0, -33);
-        console.log(this.maxDate);
+//        console.log(this.maxDate);
         return {
           backgroundImage: "url('"+urlString+"')"
 //          background: "red"
@@ -129,16 +131,12 @@
 
     methods: {
       parseStartDate(val){
-        console.log(val);
-        var str = [];
-        for (let i=0; i<=val.length; i++){
+        this.numStartDate = [];
+        for (let i=0; i<val.length; i++){
           if (val[i] != "-"){
-            str = str + str[i];
-            console.log(str);
-            console.log(val.length);
+            this.numStartDate = this.numStartDate + val[i];
           }
         }
-
       },
       onDay(val){
         val.value = !val.value;
@@ -167,30 +165,30 @@
         }
         return cost;
       },
-      toggleFlirt() {
-        this.select.flirt.value = !this.select.flirt.value;
-        if (this.select.flirt.value) {
-          this.select.flirt.message = 'Убрать';
-        } else this.select.flirt.message = 'Выбрать!';
-      },
-      toggleRomantic() {
-        this.select.romantic.value =!this.select.romantic.value;
-        if (this.select.romantic.value) {
-          this.select.romantic.message = 'Убрать';
-        } else this.select.romantic.message = 'Выбрать!';
-      },
-      toggleLove() {
-        this.select.love.value =!this.select.love.value;
-        if (this.select.love.value) {
-          this.select.love.message = 'Убрать';
-        } else this.select.love.message = 'Выбрать!';
-      },
-      toggleInsane() {
-        this.select.insane.value =!this.select.insane.value;
-        if (this.select.insane.value) {
-          this.select.insane.message = 'Убрать';
-        } else this.select.insane.message = 'Выбрать!';
-      },
+//      toggleFlirt() {
+//        this.select.flirt.value = !this.select.flirt.value;
+//        if (this.select.flirt.value) {
+//          this.select.flirt.message = 'Убрать';
+//        } else this.select.flirt.message = 'Выбрать!';
+//      },
+//      toggleRomantic() {
+//        this.select.romantic.value =!this.select.romantic.value;
+//        if (this.select.romantic.value) {
+//          this.select.romantic.message = 'Убрать';
+//        } else this.select.romantic.message = 'Выбрать!';
+//      },
+//      toggleLove() {
+//        this.select.love.value =!this.select.love.value;
+//        if (this.select.love.value) {
+//          this.select.love.message = 'Убрать';
+//        } else this.select.love.message = 'Выбрать!';
+//      },
+//      toggleInsane() {
+//        this.select.insane.value =!this.select.insane.value;
+//        if (this.select.insane.value) {
+//          this.select.insane.message = 'Убрать';
+//        } else this.select.insane.message = 'Выбрать!';
+//      },
       validate() {
         this.invalidMessage = []; //cleaning arr
         let count = 0;
@@ -201,18 +199,37 @@
             }
           }
         }
-        console.log(count);
         if (count == 0) {
           this.invalidMessage.push('Выберите хотя бы один день');
           this.invalid = true;
-        } else {
-          this.invalid = false;
         }
-        if (!this.customerName) {
-          this.invalidMessage.push('введите имя');
+        if (this.weeks < 1 || this.weeks > 10) {
+          this.invalidMessage.push('Количество недель не корректно');
           this.invalid = true;
         }
-//        if
+        if (!this.customerName) {
+          this.invalidMessage.push('Введите имя');
+          this.invalid = true;
+        }
+        this.parseStartDate(this.startDate);
+        if (this.numStartDate < this.numMinDate || this.numStartDate > this.numMaxDate) {
+          this.invalidMessage.push('Дата не корректна');
+          this.invalid = true;
+        }
+        if (!this.address) {
+          this.invalidMessage.push('Введите адрес');
+          this.invalid = true;
+        }
+        if (this.phoneNumber.length<10) {
+          this.invalidMessage.push('Введите телефон');
+          this.invalid = true;
+        } else {
+          if (isNaN(+this.phoneNumber)){
+            this.invalidMessage.push('Телефон не корректен');
+            this.invalid = true;
+          }
+        }
+
 
       }
     },
@@ -242,8 +259,7 @@
       this.numMinDate = Number(this.formationDate.currYear + '' + this.formationDate.currMonth + '' + this.formationDate.currDate);
 
       this.numMaxDate = Number(this.formationDate.maxYear + '' + this.formationDate.currMonth + '' + this.formationDate.currDate);
-      console.log(this.numMaxDate);
-    },
+      },
 
 
 
@@ -270,7 +286,7 @@
 .image {
   width: 50%;
   overflow: hidden;
-  height: 520px;
+  height: 540px;
 /*  background-image: url('../assets/bgVer1.jpg');*/
   background-repeat: no-repeat;
   background-position: center center;
@@ -283,7 +299,7 @@
 }
 #selection {
   width: 50%;
-  height: 520px;
+  height: 540px;
   padding: 10px;
   position: relative;
 }
@@ -328,6 +344,7 @@
     padding-left: 0;
     padding-right: 0;
   }
+/*
   .flirt {
     position: relative;
     height: 40px;
@@ -388,6 +405,7 @@
     right: 0;
     top: -5px;
   }
+*/
 
   .name, .date{
     position: relative;
@@ -469,6 +487,10 @@
     width: 60%;
     resize: none;
   }
+  .invalid{
+    color: red;
+    display: inline;
+  }
   footer{
     width: 100%;
     position: absolute;
@@ -497,6 +519,12 @@
   h5{
 
   }
+.fade-enter-active, .fade-leave-active {
+  transition: opacity 0.3s;
+}
+.fade-enter, .fade-leave-to {
+  opacity: 0;
+}
 input:invalid+span:after {
   position: absolute;
   right: 0px;
@@ -512,4 +540,5 @@ input:valid+span:after {
   content: '✓';
   padding-left: 5px;
 }
+
 </style>

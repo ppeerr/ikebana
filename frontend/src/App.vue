@@ -48,7 +48,7 @@
         endpoint: 'http://128.199.36.211:9090/api/products',
         posts: [],
         w: 760,
-        h: 520,
+        h: 540,
         state: '',
         stateModal: '',
         mainScreen: 'main',
@@ -151,9 +151,6 @@
       onOpenModal(val) {
         console.log(this.w);
         console.log(this.h);
-        // this.currentBouquet = val;
-        // this.state = 'modal';
-//console.log(navigator.userAgent.match(/iPhone/i));
         this.$modal.show(MyComponentOne, {
 
           text: val,
@@ -231,7 +228,7 @@
       }
        else {
        this.w="760px";
-       this.h="520px";
+       this.h="540px";
       }
     }
   }
