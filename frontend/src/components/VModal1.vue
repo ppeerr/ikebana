@@ -6,6 +6,9 @@
 <!--      <img :src="text.img" height="520px">-->
     </div>
     <div id="selection">
+      <button class="close" @click="$emit('close')">
+        ❌
+      </button>
       <h4>Выберите дни:</h4>
 <!--      <p>{{ text }}</p>-->
       <div class="btn-group" role="group">
@@ -59,9 +62,6 @@
     data() {
       return {
         image: 'show',
-//        styleObj: {
-//          backgroundImage: "url('../src/assets/roses.jpg')"
-//        },
         customerName: '',
         address: '',
         phoneNumber: '',
@@ -86,24 +86,6 @@
         invalidMessage: [],
         weeks: 1,
 
-        select: {
-          flirt: {
-            value: false,
-            message: 'Выбрать!'
-          },
-          romantic: {
-            value: false,
-            message: 'Выбрать!'
-          },
-          love: {
-            value: false,
-            message: 'Выбрать!'
-          },
-          insane: {
-            value: false,
-            message: 'Выбрать!'
-          }
-        },
         selectDay: {
           monday: {value: false, title: 'Понедельник', shotTitle: 'Пн'},
           tuesday: {value: false, title: 'Вторник', shotTitle: 'Вт'},
@@ -120,11 +102,8 @@
     computed: {
       styleObj(){
         let urlString = "../src/assets" + this.text.img;
-//        urlString = urlString.slice(0, -33);
-//        console.log(this.maxDate);
         return {
           backgroundImage: "url('"+urlString+"')"
-//          background: "red"
         }
       },
     },
@@ -190,7 +169,8 @@
 //        } else this.select.insane.message = 'Выбрать!';
 //      },
       validate() {
-        this.invalidMessage = []; //cleaning arr
+        this.invalidMessage = [];
+        this.invalid = false;
         let count = 0;
         for (let day in this.selectDay){
           for (let val in this.selectDay[day]){
@@ -229,8 +209,17 @@
             this.invalid = true;
           }
         }
+        if (this.invalid == false) {
+          this.sendData();
+        }
+
+      },
+      sendData(){
+        console.log('kek');
 
 
+
+        this.$emit('close');
       }
     },
     mounted: function() {
