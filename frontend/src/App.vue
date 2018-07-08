@@ -57,7 +57,7 @@
         scrollSpeed: 30,
         //      scrolled: '1',
         scrolledAfter: '',
-        message: 'Тян тянучка цветы тянучке подарите, ей приятно будет, может даст, но не факт, скорей всего нет. Цветы пахучие тянучке. На выбор, разные варианты подписки, завалите ее цветами. Курьер приедет и подарит ей букет, тянучка обнимет его, но не вас.',
+        message: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec odio. Praesent libero. Sed cursus ante dapibus diam. Sed nisi. Nulla quis sem at nibh elementum imperdiet. Duis sagittis ipsum. Praesent mauris. Fusce nec tellus sed augue semper porta.',
         menuItems: {
           menuItem1: 'Товары',
           menuItem2: 'Как работаем?',

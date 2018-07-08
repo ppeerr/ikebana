@@ -71,7 +71,7 @@
         numMinDate: '',
         numMaxDate: '',
         startDate: '',
-        numStartDate: [],
+        numStartDate: '',
 
         formationDate: {
           date: '',
@@ -110,7 +110,7 @@
 
     methods: {
       parseStartDate(val){
-        this.numStartDate = [];
+        this.numStartDate = '';
         for (let i=0; i<val.length; i++){
           if (val[i] != "-"){
             this.numStartDate = this.numStartDate + val[i];
@@ -215,7 +215,14 @@
 
       },
       sendData(){
-        console.log('kek');
+        console.log(this.startDate);
+        console.log(this.customerName);
+        console.log(this.address);
+        console.log(this.phoneNumber);
+        console.log(this.comment);
+        console.log(this.weeks);
+        console.log(this.selectDay);
+        console.log(this.text.id);
 
 
 
